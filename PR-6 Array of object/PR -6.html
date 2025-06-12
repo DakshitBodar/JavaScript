@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Student Table</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f0f2f5;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .controls input[type="text"] {
+      padding: 10px;
+      width: 200px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .controls button {
+      padding: 10px 15px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .controls button:hover {
+      background-color: #0056b3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    th,
+    td {
+      border: 1px solid #dee2e6;
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f8f9fa;
+      color: #333;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    #output {
+      margin-top: 20px;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-family: monospace;
+      white-space: pre-wrap;
+      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Student Details</h2>
+
+  <div class="controls">
+    <input type="text" id="subjectSearch" placeholder="Search by Subject">
+    <button onclick="subjectFilter(document.getElementById('subjectSearch').value)">Search</button>
+    <input type="text" id="nameSearch" placeholder="Search by Name">
+    <button onclick="nameFilter(document.getElementById('nameSearch').value)">Search</button>
+
+    <br>
+
+    <button onclick="sortByAge()">Sort by Age</button>
+    <button onclick="listNamesGrades()">List Names & Grades</button>
+    <button onclick="averageAge()">Average Age</button>
+    <button onclick="filterOlderThan18()">Age > 18</button>
+    <button onclick="gradeAMath()">Grade A & Math</button><br>
+    <button>Grade </button>
+    <button onclick="gradeFilter('A')">A</button>
+    <button onclick="gradeFilter('B')">B</button>
+    <button onclick="gradeFilter('C')">C</button>
+
+  </div>
+  <hr>
+
+
+  <table id="studentTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Grade</th>
+        <th>Subject</th>
+      </tr>
+    </thead>
+    <tbody id="record"></tbody>
+  </table>
+  <div id="output"></div>
+
+
+
+  <script>
+    const students = [
+      { id: 1, name: "Karmit", age: 17, grade: "A", subject: "Math" },
+      { id: 2, name: "Vivek", age: 19, grade: "B", subject: "English" },
+      { id: 3, name: "Rathod", age: 17, grade: "C", subject: "Science" },
+      { id: 4, name: "Khush", age: 19, grade: "A", subject: "History" },
+      { id: 5, name: "Raj", age: 18, grade: "B", subject: "Math" },
+      { id: 6, name: "Heet", age: 17, grade: "C", subject: "English" },
+      { id: 7, name: "Vansh", age: 18, grade: "A", subject: "Science" },
+      { id: 8, name: "Aditya", age: 19, grade: "B", subject: "History" },
+      { id: 9, name: "Shivam", age: 17, grade: "C", subject: "Math" },
+      { id: 10, name: "Jack", age: 18, grade: "A", subject: "English" },
+      { id: 11, name: "Jaynesh Sarkar", age: 22, grade: "B", subject: "Science" },
+      { id: 12, name: "Milan Saheb", age: 29, grade: "C", subject: "History" },
+      { id: 13, name: "Parthiv", age: 18, grade: "A", subject: "Math" },
+      { id: 14, name: "Tirth", age: 19, grade: "B", subject: "English" },
+      { id: 15, name: "Roxy", age: 17, grade: "C", subject: "Science" },
+      { id: 16, name: "Kartik", age: 18, grade: "A", subject: "History" },
+      { id: 17, name: "Meet", age: 19, grade: "B", subject: "Math" },
+      { id: 18, name: "Balvant", age: 17, grade: "C", subject: "English" },
+      { id: 19, name: "Rahul", age: 18, grade: "A", subject: "Science" },
+      { id: 20, name: "Jeel", age: 19, grade: "B", subject: "History" }
+    ];
+
+    const tableBody = document.querySelector("#studentTable tbody");
+    const output = document.getElementById("output");
+
+    const getStudent = () => {
+      let tbl = "";
+      students.map((val, index) => {
+        tbl += `
+      <tr>
+        <td>${val.id}</td>
+        <td>${val.name}</td>
+        <td>${val.age}</td>
+        <td>${val.grade}</td>
+        <td>${val.subject}</td>
+      </tr>
+    `;
+      });
+      document.getElementById('record').innerHTML = tbl;
+    }
+    getStudent();
+
+
+
+
+    const gradeFilter = (grade) => {
+      let ans = students.filter(student => {
+        return student.grade == grade;
+      });
+      let tbl = "";
+      ans.map((val, index) => {
+        tbl += `
+      <tr>
+        <td>${val.id}</td>
+        <td>${val.name}</td>
+        <td>${val.age}</td>
+        <td>${val.grade}</td>
+        <td>${val.subject}</td>
+      </tr>
+    `;
+      });
+      document.getElementById('record').innerHTML = tbl;
+    }
+
+
+    const filterOlderThan18 = () => {
+      let ans = students.filter(student => {
+        return student.age > 18;
+      });
+      let tbl = "";
+      ans.map((val, index) => {
+        tbl += `
+      <tr>
+        <td>${val.id}</td>
+        <td>${val.name}</td>
+        <td>${val.age}</td>
+        <td>${val.grade}</td>
+        <td>${val.subject}</td>
+      </tr>
+    `;
+      });
+      document.getElementById('record').innerHTML = tbl;
+    }
+
+    const nameFilter = (name) => {
+      let ans = students.filter(student => {
+        return student.name.toLowerCase().includes(name.toLowerCase());
+      });
+      let tbl = "";
+      ans.map((val) => {
+        tbl += `
+      <tr>
+        <td>${val.id}</td>
+        <td>${val.name}</td>
+        <td>${val.age}</td>
+        <td>${val.grade}</td>
+        <td>${val.subject}</td>
+      </tr>
+    `;
+      });
+      document.getElementById('record').innerHTML = tbl;
+    }
+
+
+    const subjectFilter = () => {
+      const subject = document.getElementById('subjectSearch').value;
+      let ans = students.filter(student => {
+        return student.subject.toLowerCase().includes(subject.toLowerCase());
+      });
+      let tbl = "";
+      ans.map((val) => {
+        tbl += `
+      <tr>
+        <td>${val.id}</td>
+        <td>${val.name}</td>
+        <td>${val.age}</td>
+        <td>${val.grade}</td>
+        <td>${val.subject}</td>
+      </tr>
+    `;
+      });
+      document.getElementById('record').innerHTML = tbl;
+    }
+
+    const sortByAge = () => {
+      let sortedStudents = [...students].sort((a, b) => {
+        return a.age - b.age;
+      });
+      let tbl = "";
+      sortedStudents.map((val) => {
+        tbl += `
+      <tr>
+        <td>${val.id}</td>
+        <td>${val.name}</td>
+        <td>${val.age}</td>
+        <td>${val.grade}</td>
+        <td>${val.subject}</td>
+      </tr>
+    `;
+      });
+      document.getElementById('record').innerHTML = tbl;
+    }
+
+    
+    const averageAge = () => {
+      let total = students.reduce((sum, student) => sum + student.age, 0);
+      let avg = (total / students.length).toFixed(2);
+      alert(`Average Age: ${avg}`);
+    }
+
+    const gradeAMath = () => {
+      let ans = students.filter(student => {
+        return student.grade === 'A' && student.subject === 'Math';
+      });
+      let tbl = "";
+      ans.map((val) => {
+        tbl += `
+      <tr>
+        <td>${val.id}</td>
+        <td>${val.name}</td>
+        <td>${val.age}</td>
+        <td>${val.grade}</td>
+        <td>${val.subject}</td>
+      </tr>
+    `;
+      });
+      document.getElementById('record').innerHTML = tbl;
+    }
+
+    const listNamesGrades = () => {
+      let namesGrades = students.map(student => `${student.name} - ${student.grade}`).join('\n');
+      output.textContent = namesGrades;
+    }
+
+
+
+  </script>
+
+</body>
+
+</html>
