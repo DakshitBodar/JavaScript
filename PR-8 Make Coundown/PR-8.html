@@ -1,79 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Counter with </title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin-top: 50px;
-            text-align: center;
-        }
-        button {
-            margin: 5px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        h2 {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
-        p {
-            font-size: 18px;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Counter App</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: #121212;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+    color: #eee;
+  }
+  .counter-box {
+    background: #1e1e1e;
+    padding: 40px 50px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px #00ffe7, 0 0 30px #00ffe7 inset;
+    width: 320px;
+    text-align: center;
+  }
+  h2#count {
+    font-size: 80px;
+    margin-bottom: 30px;
+    letter-spacing: 4px;
+    text-shadow: 0 0 10px #00ffe7;
+  }
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 30px;
+  }
+  button {
+    flex: 1;
+    padding: 14px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #00ffe7;
+    background: transparent;
+    border: 2px solid #00ffe7;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 8px #00ffe7;
+  }
+  button:hover {
+    background: #00ffe7;
+    color: #121212;
+    box-shadow: 0 0 20px #00ffe7;
+  }
+  button#resetbtn {
+    color: #ff3e3e;
+    border-color: #ff3e3e;
+    box-shadow: 0 0 8px #ff3e3e;
+  }
+  button#resetbtn:hover {
+    background: #ff3e3e;
+    color: #121212;
+    box-shadow: 0 0 20px #ff3e3e;
+  }
+  .counts p {
+    font-size: 18px;
+    margin: 8px 0;
+    color: #aaa;
+  }
+  .counts span {
+    color: #eee;
+    font-weight: 700;
+  }
+</style>
 </head>
 <body>
 
-    <h2 id="count">0</h2>
-
+<div class="counter-box">
+  <h2 id="count">0</h2>
+  <div class="buttons">
     <button id="decrementbtn">Decrement</button>
     <button id="incrementbtn">Increment</button>
     <!-- <button id="resetbtn">Reset</button> -->
-
+  </div>
+  <div class="counts">
     <p>Increment count: <span id="incrementcount">0</span></p>
     <p>Decrement count: <span id="decrementcount">0</span></p>
+  </div>
+</div>
 
-    <script>
-        let count = 0;
-        let decrement = 0;
-        let increment = 0;
+<script>
+  let count = 0;
+  let decrement = 0;
+  let increment = 0;
 
-        function update() {
-            document.getElementById('count').textContent = count;
-            document.getElementById('decrementcount').textContent = decrement;
-            document.getElementById('incrementcount').textContent = increment;
-        }
+  function update() {
+    document.getElementById('count').textContent = count;
+    document.getElementById('decrementcount').textContent = decrement;
+    document.getElementById('incrementcount').textContent = increment;
+  }
 
-        function incrementfun() {
-            count++;
-            increment++;
-            update();
-        }
+  function incrementfun() {
+    count++;
+    increment++;
+    update();
+  }
 
-        function decrementfun() {
-            if(count > 0 ){
-                count--;
-            decrement++;
-            update();
-            }
-        }
+  function decrementfun() {
+    if(count > 0){
+        count--;
+    decrement++;
+    update();
+    }
+  }
 
-        // function resetfun() {
-        //     count = 0;
-        //     increment = 0;
-        //     decrement = 0;
-        //     update();
-        // }
+//   function resetfun() {
+//     count = 0;
+//     increment = 0;
+//     decrement = 0;
+//     update();
+//   }
 
-        document.getElementById('incrementbtn').addEventListener('click', incrementfun);
-        document.getElementById('decrementbtn').addEventListener('click', decrementfun);
-        // document.getElementById('resetbtn').addEventListener('click', resetfun);
+  document.getElementById('incrementbtn').addEventListener('click', incrementfun);
+  document.getElementById('decrementbtn').addEventListener('click', decrementfun);
+//   document.getElementById('resetbtn').addEventListener('click', resetfun);
 
-        update();
-    </script>
+  update();
+</script>
 
 </body>
 </html>
