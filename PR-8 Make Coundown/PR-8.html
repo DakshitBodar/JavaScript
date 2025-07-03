@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Counter with </title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin-top: 50px;
+            text-align: center;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        h2 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2 id="count">0</h2>
+
+    <button id="decrementbtn">Decrement</button>
+    <button id="incrementbtn">Increment</button>
+    <!-- <button id="resetbtn">Reset</button> -->
+
+    <p>Increment count: <span id="incrementcount">0</span></p>
+    <p>Decrement count: <span id="decrementcount">0</span></p>
+
+    <script>
+        let count = 0;
+        let decrement = 0;
+        let increment = 0;
+
+        function update() {
+            document.getElementById('count').textContent = count;
+            document.getElementById('decrementcount').textContent = decrement;
+            document.getElementById('incrementcount').textContent = increment;
+        }
+
+        function incrementfun() {
+            count++;
+            increment++;
+            update();
+        }
+
+        function decrementfun() {
+            if(count > 0 ){
+                count--;
+            decrement++;
+            update();
+            }
+        }
+
+        // function resetfun() {
+        //     count = 0;
+        //     increment = 0;
+        //     decrement = 0;
+        //     update();
+        // }
+
+        document.getElementById('incrementbtn').addEventListener('click', incrementfun);
+        document.getElementById('decrementbtn').addEventListener('click', decrementfun);
+        // document.getElementById('resetbtn').addEventListener('click', resetfun);
+
+        update();
+    </script>
+
+</body>
+</html>
