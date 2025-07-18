@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add to cart</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+
+
+    <div class="container my-5">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>Fruit Shop</h2>
+            <a href="cart.html" class="btn btn-success">View Cart</a>
+        </div>
+        <hr />
+        <div class="row mt-4" id="product">
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+
+        let data = [
+            {
+                id: 1,
+                name: 'apple',
+                price: 100,
+                qty: 1,
+                img: 'img/apple.jpg'
+            },
+            {
+                id: 2,
+                name: 'banana',
+                price: 50,
+                qty: 1,
+                img: 'img/banana.jpg'
+            },
+            {
+                id: 3,
+                name: 'orange',
+                price: 80,
+                qty: 1,
+                img: 'img/orange.jpg'
+            },
+            {
+                id: 4,
+                name: 'grapes',
+                price: 120,
+                qty: 1,
+                img: 'img/grapes.jpg'
+            }, {
+                id: 5,
+                name: 'grapes',
+                price: 120,
+                qty: 1,
+                img: 'img/grapes.jpg'
+            },
+            {
+                id: 6,
+                name: 'apple',
+                price: 100,
+                qty: 1,
+                img: 'img/apple.jpg'
+            },
+            {
+                id: 7,
+                name: 'banana',
+                price: 50,
+                qty: 1,
+                img: 'img/banana.jpg'
+            },
+            {
+                id: 8,
+                name: 'orange',
+                price: 80,
+                qty: 1,
+                img: 'img/orange.jpg'
+            }
+        ]
+
+        const getProduct = () => {
+            let tbl = "";
+            data.map((val) => {
+                tbl += `
+                <div class="card col-md-3 mb-4">
+                    <img src="${val.img}" class="card-img-top" alt="..." > 
+                        <div class="card-body">
+                            <h5 class="card-title">${val.name}</h5>
+                            <p class="card-text">${val.price}</p>
+                            <a onclick="addCart(${val.id})" class="btn btn-primary">Add cart</a>
+                        </div>
+                </div>
+                `
+            })
+            document.getElementById("product").innerHTML = tbl;
+        }
+        getProduct();
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        const addCart = (id) => {
+
+            let dup = cart.find(val => val.id == id);
+
+            if (dup) {
+                alert('Item Already Exists');
+                return false;
+            }
+            let single = data.find(val => val.id == id);
+            cart.push(single);
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+        }
+
+    </script>
+
+</body>
+
+</html>
