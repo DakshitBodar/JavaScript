@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weather Info</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+      margin: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    .search-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      width: 200px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 15px;
+      margin-left: 8px;
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1f618d;
+    }
+
+    table {
+      width: 90%;
+      margin: 0 auto;
+      border-collapse: collapse;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    th {
+      background-color: #2980b9;
+      color: #fff;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>🌦️ Weather Info</h2>
+
+  <div class="search-container">
+    <input type="text" id="cityInput" placeholder="Enter city name" value="Surat" />
+    <button onclick="fetchWeather()">Get Weather</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>City</th>
+        <th>Temperature (°C)</th>
+        <th>Humidity (%)</th>
+        <th>Wind Speed (m/s)</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody id="weather-data">
+     
+    </tbody>
+  </table>
+
+  <script>
+    const API_KEY = '14951c93f3d11e8ac8bed96dd90e8bc7';
+
+    function fetchWeather() {
+      const city = document.getElementById('cityInput').value.trim();
+      const tbody = document.getElementById('weather-data');
+
+      
+
+  
+
+      fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`)
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          const weatherRow = `
+            <tr>
+              <td>${data.name}, ${data.sys.country}</td>
+              <td>${data.main.temp} °C</td>
+              <td>${data.main.humidity}%</td>
+              <td>${data.wind.speed} m/s</td>
+              <td>${data.weather[0].main} (${data.weather[0].description})</td>
+            </tr>
+          `;
+          document.getElementById('weather-data').innerHTML = weatherRow;
+        })
+        
+    }
+
+   
+    window.onload = fetchWeather;
+  </script>
+
+</body>
+</html>
