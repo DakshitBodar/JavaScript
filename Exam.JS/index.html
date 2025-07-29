@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recipe Book</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    /* Global styles */
+    body {
+      background-color: #f5f7fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 40px 15px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+    form {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgb(0 0 0 / 0.1);
+      max-width: 650px;
+      width: 100%;
+      margin-bottom: 3rem;
+      transition: box-shadow 0.3s ease-in-out;
+    }
+    form:hover {
+      box-shadow: 0 10px 30px rgb(0 0 0 / 0.15);
+    }
+    label {
+      font-weight: 600;
+      color: #34495e;
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+    input[type='text'],
+    textarea,
+    select {
+      border-radius: 8px !important;
+      border: 1.5px solid #ced4da !important;
+      padding: 0.7rem 1rem !important;
+      font-size: 1rem !important;
+      transition: border-color 0.3s ease;
+      width: 100%;
+    }
+    input[type='text']:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #007bff !important;
+      box-shadow: 0 0 5px #007bff;
+      outline: none;
+    }
+    textarea {
+      resize: vertical;
+    }
+    button[type='submit'] {
+      margin-top: 1.5rem;
+      width: 100%;
+      padding: 0.9rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 10px;
+      transition: background-color 0.3s ease;
+    }
+    button[type='submit']:hover {
+      background-color: #0056b3;
+    }
+    /* Filters section */
+    .filters-wrapper {
+      max-width: 900px;
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+    .filters-wrapper input,
+    .filters-wrapper select {
+      flex: 1 1 250px;
+      border-radius: 10px !important;
+      padding: 0.7rem 1rem !important;
+      font-size: 1rem !important;
+    }
+    /* Table styles */
+    table {
+      max-width: 900px;
+      width: 100%;
+      border-collapse: separate !important;
+      border-spacing: 0 10px !important;
+      background: transparent !important;
+    }
+    thead th {
+      background-color: #007bff !important;
+      color: white !important;
+      font-weight: 600 !important;
+      padding: 12px 18px !important;
+      border-radius: 10px !important;
+      text-align: center !important;
+    }
+    tbody tr {
+      background-color: white;
+      box-shadow: 0 5px 15px rgb(0 0 0 / 0.05);
+      transition: transform 0.2s ease;
+      border-radius: 10px;
+    }
+    tbody tr:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgb(0 0 0 / 0.1);
+      cursor: pointer;
+    }
+    tbody td {
+      padding: 15px 18px !important;
+      vertical-align: middle !important;
+      border: none !important;
+      color: #2c3e50;
+      font-size: 0.95rem;
+      text-align: center;
+      word-break: break-word;
+      max-width: 200px;
+    }
+    /* Responsive */
+    @media (max-width: 768px) {
+      .filters-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      tbody td {
+        font-size: 0.9rem;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Recipe Book</h1>
+
+  <form id="recipe-form" onsubmit="formsubmit(event)" novalidate>
+    <label for="title">Recipe Title</label>
+    <input
+      type="text"
+      id="title"
+      name="title"
+      placeholder="E.g. Spaghetti Carbonara"
+      required
+      autocomplete="off"
+    />
+
+    <label for="ingredients">Ingredients (comma separated)</label>
+    <textarea
+      id="ingredients"
+      name="ingredients"
+      rows="3"
+      placeholder="E.g. spaghetti, eggs, parmesan, pancetta"
+      required
+    ></textarea>
+
+    <label for="instructions">Instructions</label>
+    <textarea
+      id="instructions"
+      name="instructions"
+      rows="5"
+      placeholder="Step by step cooking instructions..."
+      required
+    ></textarea>
+
+    <label for="cuisine">Cuisine Type</label>
+    <select id="cuisine" name="cuisine" required>
+      <option value="" disabled selected>Select cuisine</option>
+      <option>Italian</option>
+      <option>Chinese</option>
+      <option>Indian</option>
+      <option>Mexican</option>
+      <option>American</option>
+      <option>Other</option>
+    </select>
+
+    <button type="submit" class="btn btn-primary">Add Recipe</button>
+  </form>
+
+  <div class="filters-wrapper">
+    <input
+      type="text"
+      id="searchTitle"
+      placeholder="Search by Title"
+      oninput="searchAndFilter()"
+      aria-label="Search recipes by title"
+      autocomplete="off"
+    />
+    <input
+      type="text"
+      id="searchIngredients"
+      placeholder="Search by Ingredients"
+      oninput="searchAndFilter()"
+      aria-label="Search recipes by ingredients"
+      autocomplete="off"
+    />
+    <select
+      id="filterCuisine"
+      onchange="searchAndFilter()"
+      aria-label="Filter recipes by cuisine"
+    >
+      <option value="">All Cuisines</option>
+      <option value="Italian">Italian</option>
+      <option value="Indian">Indian</option>
+      <option value="Chinese">Chinese</option>
+      <option value="Mexican">Mexican</option>
+      <option value="American">American</option>
+      <option value="Other">Other</option>
+    </select>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Ingredients</th>
+        <th>Instructions</th>
+        <th>Cuisine</th>
+        <th>Edit</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="Record"></tbody>
+  </table>
+
+  <script src="crud.js"></script>
+</body>
+</html>
